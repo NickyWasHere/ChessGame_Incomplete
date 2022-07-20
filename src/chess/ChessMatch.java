@@ -26,7 +26,7 @@ public class ChessMatch {
 			for (int j=0; j<board.getColumns(); j++) {
 				
 				//Changes every Piece to Chess Piece
-				mat[i][j] = (ChessPiece) board.piece(i, j); //Downcasts from Piece to ChessPiece
+				mat[i][j] = (ChessPiece) board.getPiece(i, j); //Downcasts from Piece to ChessPiece
 			}
 		}
 		
