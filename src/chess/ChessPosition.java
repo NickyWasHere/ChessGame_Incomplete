@@ -45,12 +45,12 @@ public class ChessPosition {
 	
 	protected static ChessPosition fromPosition(Position position) {
 		
-		/* chess position (charNumber) -> matrix position (char) ('a' - column), 8 - row 
-		 * (a8) -> 97 (unicode a) - 97 (column) , 8 - 8 (row)
-		 * (b7) -> 97 (unicode a) - 98 (column) , 8 - 7 (row)
+		/* chess position (charNumber) -> matrix position (char) ('a' + column), 8 - row 
+		 * (a8) -> 97 (unicode a) + 97 (column) , 8 - 8 (row)
+		 * (b7) -> 97 (unicode a) + 98 (column) , 8 - 7 (row)
 		 */
 		
-		//Converts matrix position to chess position 6, 5
+		//Converts matrix position to chess position
 		return new ChessPosition((char) ('a' + position.getColumn()), 8 - position.getRow());
 	}
 

@@ -7,6 +7,14 @@ import chess.ChessPiece;
 import chess.ChessPosition;
 
 public class UI {
+	
+	//Code for clearing the screen taken from:
+	//https://stackoverflow.com/questions/2979383/java-clear-the-console
+	public static void clearScreen() {
+		System.out.print("\033[H\033[2J");
+		System.out.flush();
+		
+	}
 
 	//Reads user input on the chess position
 	public static ChessPosition readChessPosition(Scanner sc) {
@@ -19,7 +27,7 @@ public class UI {
 		
 		} catch (RuntimeException e) { //any exception that occurs will go here
 			throw new InputMismatchException(
-					"Error reading chess position: valid values are from a1 to h8 only");
+					"Please input a value between a1 and h8");
 			
 		}
 	}

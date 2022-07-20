@@ -57,7 +57,7 @@ public class Board {
 		//prevents placing a piece where there's already a piece in place
 		if (thereIsAPiece(position)) {
 			throw new BoardException(
-					"There is already a piece in position " + position);
+					"There is already a piece on position " + position);
 		}
 		
 		pieces[position.getRow()][position.getColumn()] = piece; //Puts the piece in a specific place on the matrix
