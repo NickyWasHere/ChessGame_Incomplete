@@ -7,7 +7,7 @@ public abstract class ChessPiece extends Piece{
 	
 	//actual pieces that will be used on the board
 
-	private Color color;
+	protected Color color;
 
 	public ChessPiece(Board board, Color color) {
 		super(board);
