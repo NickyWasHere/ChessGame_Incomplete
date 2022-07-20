@@ -1,9 +1,29 @@
 package application;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 import chess.ChessPiece;
+import chess.ChessPosition;
 
 public class UI {
 
+	//Reads user input on the chess position
+	public static ChessPosition readChessPosition(Scanner sc) {
+		
+		try { //Try and catch exceptions
+			String pos = sc.nextLine();
+			char column = pos.charAt(0);
+			int row = Integer.parseInt(pos.substring(1)); //cuts the String on position 1 and converts it to int
+			return new ChessPosition(column, row);
+		
+		} catch (RuntimeException e) { //any exception that occurs will go here
+			throw new InputMismatchException(
+					"Error reading chess position: valid values are from a1 to h8 only");
+			
+		}
+	}
+	
 	//Shows the board to the user by receiving the matrix of pieces
 	public static void printBoard(ChessPiece[][] pieces) {
 		

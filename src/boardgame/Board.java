@@ -64,6 +64,25 @@ public class Board {
 		piece.position = position; //changes the position of said piece from null to a specific position
 	}
 	
+	public Piece removePiece(Position position) {
+		
+		//prevents removing a piece from a position that doesn't exists
+		if (!positionExists(position)) {
+			throw new BoardException(
+					"Position not on the board");
+		}
+		
+		if (getPiece(position) == null) { //checks if there's a piece in this position
+			return null;
+		}
+		
+		Piece aux = getPiece(position);
+		aux.position = null;
+		pieces[position.getRow()][position.getColumn()] = null; //Removes piece from Piece matrix
+		return aux; //return the piece that was removed
+		
+	}
+	
 	public boolean positionExists(Position position) {
 		return positionExists(position.getRow(), position.getColumn());
 	}
