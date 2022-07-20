@@ -37,4 +37,9 @@ public class Board {
 	public Piece piece(Position position) { //gets a specific place on the board by giving it a position
 		return pieces[position.getRow()][position.getColumn()];
 	}
+	
+	public void placePiece(Position position, Piece piece) {
+		pieces[position.getRow()][position.getColumn()] = piece; //Puts the piece in a specific place on the matrix
+		piece.position = position; //changes the position of said piece from null to a specific position
+	}
 }

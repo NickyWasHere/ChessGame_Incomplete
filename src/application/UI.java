@@ -10,7 +10,7 @@ public class UI {
 		//Travels the entirety of the board to print every blank space or piece
 		for (int i=0; i<pieces.length; i++) {
 			
-			System.out.print((8 - i) + "  "); //shows the numbers
+			System.out.print((8 - i) + " "); //shows the numbers
 			for (int j=0; j<pieces.length; j++) { //.length only works if the board is square
 				printPiece(pieces[i][j]);
 			}
@@ -19,7 +19,7 @@ public class UI {
 			System.out.println();
 		}
 		
-		System.out.println("   a   b   c   d   e   f   g   h"); //shows the letters
+		System.out.println("  a  b  c  d  e  f  g  h"); //shows the letters
 	}
 	
 	private static void printPiece(ChessPiece piece) {
@@ -32,7 +32,7 @@ public class UI {
 			
 		}
 		
-		System.out.print("   ");
+		System.out.print("  ");
 		
 	}
 }

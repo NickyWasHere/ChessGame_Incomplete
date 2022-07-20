@@ -1,6 +1,9 @@
 package chess;
 
 import boardgame.Board;
+import boardgame.Position;
+import chess.pieces.King;
+import chess.pieces.Rook;
 
 public class ChessMatch {
 	
@@ -8,6 +11,9 @@ public class ChessMatch {
 
 	public ChessMatch() {
 		board = new Board(8, 8); //initiates a new board matrix with determined size
+		
+		//Calls the method initialSetup on the Constructor to place all the pieces when a new ChessMatch initiates
+		initialSetup(); 
 	}
 	
 	public ChessPiece[][] getPieces() { //transforms the spaces on the board from Piece to ChessPiece
@@ -25,5 +31,10 @@ public class ChessMatch {
 		}
 		
 		return mat;
+	}
+	
+	private void initialSetup() { //Sets up the pieces for the game
+		board.placePiece(new Position(2, 1), new Rook(board, Color.WHITE));
+		board.placePiece(new Position(5, 3), new King(board, Color.BLACK));
 	}
 }
