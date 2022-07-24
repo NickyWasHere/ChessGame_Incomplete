@@ -50,6 +50,7 @@ public class Rook extends ChessPiece{
 		
 	}
 	
+	//Assistant method for method above
 	private boolean[][] possibleMove(Position p, boolean[][] mat, String move) {
 		
 		//checks if position exists and there isn't a piece
