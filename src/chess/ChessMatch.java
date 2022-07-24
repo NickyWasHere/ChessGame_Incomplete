@@ -56,9 +56,14 @@ public class ChessMatch {
 	
 	//Assistant method for method performChessMove
 	private void validateSourcePosition(Position position) {
-		if (!board.thereIsAPiece(position)) {
+		if (!board.thereIsAPiece(position)) { //checks if there's a piece on position
 			throw new ChessException(
 					"There is no piece on source position");
+		}
+		
+		if (!board.getPiece(position).isThereAnyPossibleMove()) { //checks if this piece has any moves
+			throw new ChessException(
+					"There are no possible moves for chosen piece");
 		}
 		
 	}
