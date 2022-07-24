@@ -9,14 +9,26 @@ import chess.pieces.Rook;
 public class ChessMatch {
 	
 	private Board board;
+	private int turn;
+	private Color currentPlayer;
 
 	public ChessMatch() {
 		board = new Board(8, 8); //initiates a new board matrix with determined size
+		turn = 1;
+		currentPlayer = Color.WHITE;
 		
 		//Calls the method initialSetup on the Constructor to place all the pieces when a new ChessMatch initiates
 		initialSetup(); 
 	}
 	
+	public int getTurn() {
+		return turn;
+	}
+
+	public Color getCurrentPlayer() {
+		return currentPlayer;
+	}
+
 	public ChessPiece[][] getPieces() { //transforms the spaces on the board from Piece to ChessPiece
 		
 		//creates a matrix of Chess Pieces with the same size as the board
@@ -50,6 +62,7 @@ public class ChessMatch {
 		validateSourcePosition(source); //checks if there was a correct piece on the source position
 		validateTargetPosition(source, target); //checks if there was a correct piece on the target position
 		Piece capturedPiece = makeMove(source, target);
+		nextTurn(); //switches turns
 		return (ChessPiece) capturedPiece; //downcasts from Piece to ChessPiece
 		
 	}
@@ -74,6 +87,13 @@ public class ChessMatch {
 					"There are no possible moves for chosen piece");
 		}
 		
+		//checks if the piece's color is equal to the current player's
+		if (currentPlayer != ((ChessPiece) board.getPiece(position)).getColor()) { //downcasts from Piece to ChessPiece
+			throw new ChessException(
+					"Chosen piece isn't yours");
+			
+		}
+		
 	}
 	
 	//Assistant method for method performChessMove
@@ -85,6 +105,11 @@ public class ChessMatch {
 					"Chosen piece can't move to target position");
 		}
 		
+	}
+	
+	private void nextTurn() {
+		turn++;
+		currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE; //if statement to change colors
 	}
 	
 	//allows the initialSetup to set pieces up using chess coordinates
