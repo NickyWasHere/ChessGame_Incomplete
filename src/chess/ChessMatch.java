@@ -34,6 +34,13 @@ public class ChessMatch {
 		return mat;
 	}
 	
+	//Method to help in showing the user a piece's possible moves
+	public boolean[][] possibleMoves(ChessPosition source) {
+		Position position = source.toPosition(); //Converts from chess position to matrix position
+		validateSourcePosition(position);
+		return board.getPiece(position).possibleMoves();
+	}
+	
 	public ChessPiece performChessMove(ChessPosition sourcePosition, ChessPosition targetPosition) {
 		
 		//Converts the positions from chess position to matrix position
