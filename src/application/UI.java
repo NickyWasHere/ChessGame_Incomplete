@@ -16,6 +16,7 @@ public class UI {
 	//Background color taken from:
 	//https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println
 	public static final String ANSI_RESET = "\u001B[0m";
+	public static final String ANSI_YELLOW = "\u001B[33m";
 	public static final String ANSI_BLUE_BACKGROUND = "\u001B[44m";
 	
 	//Code for clearing the screen taken from:
@@ -44,14 +45,20 @@ public class UI {
 	
 	//Main method that shows entire UI
 	public static void printMatch(ChessMatch chessMatch, List<ChessPiece> captured) {
+		String showCheck = "";
 		printBoard(chessMatch.getPieces());
-		System.out.println();
-		
 		printCapturedPiece(captured);
 		System.out.println();
 		
-		System.out.println("Turn: " + chessMatch.getTurn());
-		System.out.println("Awaiting player " + chessMatch.getCurrentPlayer());
+		if (chessMatch.getCheck()) {
+			showCheck = "CHECK";
+			
+		}
+		
+		System.out.println("Turn " + chessMatch.getTurn() + " " + ANSI_YELLOW + showCheck);
+		
+		System.out.println(ANSI_RESET);
+		System.out.println(chessMatch.getCurrentPlayer() + "'s turn");
 	}
 	
 	//Shows the board to the user by receiving the matrix of pieces
@@ -60,7 +67,7 @@ public class UI {
 		//Travels the entirety of the board to print every blank space or piece
 		for (int i=0; i<pieces.length; i++) {
 			
-			System.out.print((8 - i) + "  "); //shows the numbers
+			System.out.print(ANSI_YELLOW + (8 - i) + ANSI_RESET + "    "); //shows the numbers
 			for (int j=0; j<pieces.length; j++) { //.length only works if the board is square
 				printPiece(pieces[i][j], false);
 			}
@@ -69,7 +76,8 @@ public class UI {
 			System.out.println();
 		}
 		
-		System.out.println("   a  b  c  d  e  f  g  h"); //shows the letters
+		System.out.println(ANSI_YELLOW + "     a     b     c     d     e     f     g     h"); //shows the letters
+		System.out.println(ANSI_RESET);
 	}
 	
 	//Overloading the method above
@@ -78,7 +86,7 @@ public class UI {
 		//Travels the entirety of the board to print every blank space or piece
 		for (int i=0; i<pieces.length; i++) {
 			
-			System.out.print((8 - i) + "  "); //shows the numbers
+			System.out.print(ANSI_YELLOW + (8 - i) + ANSI_RESET + "    "); //shows the numbers
 			for (int j=0; j<pieces.length; j++) { //.length only works if the board is square
 				printPiece(pieces[i][j], possibleMoves[i][j]);
 			}
@@ -87,7 +95,8 @@ public class UI {
 			System.out.println();
 		}
 		
-		System.out.println("   a  b  c  d  e  f  g  h"); //shows the letters
+		System.out.println(ANSI_YELLOW + "     a     b     c     d     e     f     g     h"); //shows the letters
+		System.out.println(ANSI_RESET);
 	}
 	
 	private static void printPiece(ChessPiece piece, boolean background) {
@@ -104,7 +113,7 @@ public class UI {
 			
 		}
 		
-		System.out.print("  ");
+		System.out.print("     ");
 		
 	}
 	

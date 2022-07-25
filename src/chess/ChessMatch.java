@@ -2,6 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import boardgame.Board;
 import boardgame.Piece;
@@ -14,14 +15,16 @@ public class ChessMatch {
 	private Board board;
 	private int turn;
 	private Color currentPlayer;
+	private boolean check;
 	
-	private List<ChessPiece> piecesOnBoard = new ArrayList<>();
+	private List<Piece> piecesOnBoard = new ArrayList<>();
 	private List<Piece> capturedPieces = new ArrayList<>();
 
 	public ChessMatch() {
 		board = new Board(8, 8); //initiates a new board matrix with determined size
 		turn = 1;
 		currentPlayer = Color.WHITE;
+		check = false;
 		
 		//Calls the method initialSetup on the Constructor to place all the pieces when a new ChessMatch initiates
 		initialSetup(); 
@@ -33,6 +36,10 @@ public class ChessMatch {
 
 	public Color getCurrentPlayer() {
 		return currentPlayer;
+	}
+	
+	public boolean getCheck() {
+		return check;
 	}
 
 	public ChessPiece[][] getPieces() { //transforms the spaces on the board from Piece to ChessPiece
@@ -68,6 +75,18 @@ public class ChessMatch {
 		validateSourcePosition(source); //checks if there was a correct piece on the source position
 		validateTargetPosition(source, target); //checks if there was a correct piece on the target position
 		Piece capturedPiece = makeMove(source, target);
+		
+		//Tests if the player put himself in check
+		if (testCheck(currentPlayer)) { 
+			undoMove(source, target, capturedPiece);
+			throw new ChessException(
+					"You can't put yourself in check");
+			
+		}
+		
+		//Tests if the opponent was put in check
+		check = (testCheck(opponent(currentPlayer))) ? true : false;
+		
 		nextTurn(); //switches turns
 		return (ChessPiece) capturedPiece; //downcasts from Piece to ChessPiece
 		
@@ -79,12 +98,24 @@ public class ChessMatch {
 		Piece capturedPiece = board.removePiece(target); //removes captured piece
 		board.placePiece(target, piece); //places pieces on target position
 		
-		if (capturedPiece != null) {
-			piecesOnBoard.remove(capturedPiece);
-			capturedPieces.add(capturedPiece);
+		if (capturedPiece != null) { //if there's a captured piece
+			piecesOnBoard.remove(capturedPiece); //remove from board
+			capturedPieces.add(capturedPiece); //add to captured pieces
 		}
 		
 		return capturedPiece;
+	}
+	
+	//Undoes the method makeMove after the king has moved to prevent moving to a Check
+	private void undoMove(Position source, Position target, Piece capturedPiece) {
+		Piece piece = board.removePiece(target); //takes moved piece
+		board.placePiece(source, piece); //puts it back in it's original place
+		
+		if (capturedPiece != null) {
+			board.placePiece(target, capturedPiece); //Puts the captured piece back in place
+			piecesOnBoard.add(capturedPiece);
+			capturedPieces.remove(capturedPiece);
+		}
 	}
 	
 	//Assistant method for method performChessMove
@@ -119,9 +150,48 @@ public class ChessMatch {
 		
 	}
 	
+	//Changes turns
 	private void nextTurn() {
 		turn++;
 		currentPlayer = (currentPlayer == Color.WHITE) ? Color.BLACK : Color.WHITE; //if statement to change colors
+	}
+	
+	private boolean testCheck(Color color) {
+		Position kingPosition = findKing(color).getChessPosition().toPosition(); //Gets this specific king's position
+		
+		//Makes a list of opponent's pieces by filtering with opponent's color
+		List<Piece> opponentPieces = piecesOnBoard.stream().filter(x -> ((ChessPiece)x).getColor() == opponent(color)).collect(Collectors.toList());
+		
+		//Goes through every single possible opponent move to test if it's possible to get to the king
+		for (Piece p : opponentPieces) {
+			boolean[][] mat = p.possibleMoves();
+			
+			//Sees if capturing the king is a possible move for all of the opponent's pieces
+			if (mat[kingPosition.getRow()][kingPosition.getColumn()]) { 
+				return true;
+			}	
+		}
+		
+		return false;
+	}
+	
+	//Assistant method for method testCheck
+	private ChessPiece findKing(Color color) {
+			
+		//Filters piece by color
+		List<Piece> list = piecesOnBoard.stream().filter(x -> ((ChessPiece)x).getColor() == color).collect(Collectors.toList());
+		for (Piece p : list) {
+			if (p instanceof King) { //Goes through all pieces of the same color to find the King
+				return (ChessPiece) p;
+			}
+		}
+		throw new IllegalStateException(
+				"There is no " + color + "king on the board");
+	}
+	
+	//Assistant method for method testCheck
+	private Color opponent(Color color) {
+		return (color == color.WHITE) ? color.BLACK : color.WHITE;
 	}
 	
 	//allows the initialSetup to set pieces up using chess coordinates

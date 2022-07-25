@@ -25,7 +25,6 @@ public class Program {
 				UI.printMatch(chessMatch, captured);
 				
 				//Choosing source
-				System.out.println();
 				System.out.print("Piece to move: ");
 				ChessPosition source = UI.readChessPosition(sc);
 				
@@ -35,7 +34,6 @@ public class Program {
 				UI.printBoard(chessMatch.getPieces(), possibleMoves); //Board showing possible moves
 					
 				//Choosing target
-				System.out.println();
 				System.out.print("Target position: ");
 				ChessPosition target = UI.readChessPosition(sc);
 				System.out.println();
