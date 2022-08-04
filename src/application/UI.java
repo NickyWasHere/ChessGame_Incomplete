@@ -55,10 +55,18 @@ public class UI {
 			
 		}
 		
-		System.out.println("Turn " + chessMatch.getTurn() + " " + ANSI_YELLOW + showCheck);
+		if (chessMatch.getCheckMate()) {
+			System.out.println(ANSI_YELLOW + "CHECKMATE");
+			System.out.println(ANSI_RESET + "Winner: " + chessMatch.getCurrentPlayer());
+			
+		} else {
+			System.out.println("Turn " + chessMatch.getTurn() + " " + ANSI_YELLOW + showCheck);
+			
+			System.out.println(ANSI_RESET);
+			System.out.println(chessMatch.getCurrentPlayer() + "'s turn");
+			
+		}
 		
-		System.out.println(ANSI_RESET);
-		System.out.println(chessMatch.getCurrentPlayer() + "'s turn");
 	}
 	
 	//Shows the board to the user by receiving the matrix of pieces
